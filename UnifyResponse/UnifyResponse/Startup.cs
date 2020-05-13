@@ -68,7 +68,6 @@ namespace UnifyResponse
 
             app.UseMiddleware(typeof(AppExceptionHandlerMiddleware));
             //app.UseMiddleware<RequestResponseLoggingMiddleware>();
-            app.UseInputOutputAlter();
 
             app.UseEndpoints(endpoints =>
             {
