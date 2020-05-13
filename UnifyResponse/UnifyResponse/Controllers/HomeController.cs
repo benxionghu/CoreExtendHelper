@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using UnifyResponse.Common;
+using UnifyResponse.Model.Request;
 
 namespace UnifyResponse.Controllers
 {
@@ -19,17 +20,22 @@ namespace UnifyResponse.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("GetSuccess")]
-        public ResponseResult<string> GetSuccess()
+        public ResponseResult<string> GetSuccess(int id)
         {
-            var basePath = Path.GetDirectoryName(typeof(Program).Assembly.Location);//获取应用程序所在目录
-            var xmlPath = Path.Combine(basePath, "UnifyResponse.xml");
-            return new ResponseSuccessResult<string>("成功的事例");
+            return new ResponseSuccessResult<string>($@"成功的事例{id}");
         }
 
-        [HttpGet("GetError")]
-        public ResponseResult<string> GetError()
+        [HttpPost("Post")]
+        public async Task<string> Post([FromBody] GetErrorRequest value)
         {
-            return new ResponseSuccessResult<string>("失败的实例");
+            return value.Text;
+        }
+
+        [HttpPost("GetError")]
+        public ResponseResult<string> GetError([FromBody]GetErrorRequest request)
+        {
+            var text = $@"失败的实例 请求参数为:{request.Id} {request.Text}";
+            return new ResponseSuccessResult<string>(text);
         }
 
         [HttpGet("GetPageResult")]

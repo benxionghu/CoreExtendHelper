@@ -8,6 +8,7 @@ using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.OpenApi.Models;
 using System;
 using System.IO;
+using UnifyResponse.Unitl;
 
 namespace UnifyResponse
 {
@@ -65,7 +66,9 @@ namespace UnifyResponse
 
             app.UseAuthorization();
 
-            //app.UseMiddleware(typeof(AppExceptionHandlerMiddleware));
+            app.UseMiddleware(typeof(AppExceptionHandlerMiddleware));
+            //app.UseMiddleware<RequestResponseLoggingMiddleware>();
+            app.UseInputOutputAlter();
 
             app.UseEndpoints(endpoints =>
             {
