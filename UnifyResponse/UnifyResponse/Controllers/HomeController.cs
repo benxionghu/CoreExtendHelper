@@ -41,10 +41,7 @@ namespace UnifyResponse.Controllers
         [HttpGet("GetPageResult")]
         public ResponseResult<PageResult<string>> GetPageResult()
         {
-            var result = new List<string>();
-            result.Add("这个是分页信息展示");
-            result.Add("这个是分页信息展示1");
-            result.Add("这个是分页信息展示2");
+            var result = new List<string> {"这个是分页信息展示", "这个是分页信息展示1", "这个是分页信息展示2"};
             return new ResponseSuccessResult<PageResult<string>>(new PageResult<string>
             {
                 CurrentIndex = 1,

@@ -67,7 +67,7 @@ namespace UnifyResponse
             app.UseAuthorization();
 
             app.UseMiddleware(typeof(AppExceptionHandlerMiddleware));
-            //app.UseMiddleware<RequestResponseLoggingMiddleware>();
+            app.UseMiddleware<LoggerMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

@@ -13,6 +13,9 @@ using UnifyResponse.LogHelper;
 
 namespace UnifyResponse.Unitl
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class AppExceptionHandlerMiddleware
     {
         private readonly RequestDelegate next;

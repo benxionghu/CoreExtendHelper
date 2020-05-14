@@ -64,7 +64,7 @@
             </summary>
             <param name="result"></param>
         </member>
-        <member name="M:UnifyResponse.Controllers.HomeController.GetSuccess">
+        <member name="M:UnifyResponse.Controllers.HomeController.GetSuccess(System.Int32)">
             <summary>
             成功的演示
             </summary>
@@ -100,11 +100,38 @@
             错误
             </summary>
         </member>
+        <member name="P:UnifyResponse.Model.Request.GetErrorRequest.Id">
+            <summary>
+            Id
+            </summary>
+        </member>
+        <member name="P:UnifyResponse.Model.Request.GetErrorRequest.Text">
+            <summary>
+            请求参数
+            </summary>
+        </member>
+        <member name="T:UnifyResponse.Unitl.AppExceptionHandlerMiddleware">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="M:UnifyResponse.Unitl.AppExceptionHandlerMiddleware.Object2XmlString(System.Object)">
             <summary>
             对象转为Xml
             </summary>
             <param name="o"></param>
+            <returns></returns>
+        </member>
+        <member name="T:UnifyResponse.Unitl.RequestLoggingMiddleware">
+            <summary>
+            请求参数日志中间件
+            </summary>
+        </member>
+        <member name="M:UnifyResponse.Unitl.RequestLoggingMiddleware.FormatRequest(Microsoft.AspNetCore.Http.HttpRequest)">
+            <summary>
+            请求参数
+            </summary>
+            <param name="request"></param>
             <returns></returns>
         </member>
     </members>
