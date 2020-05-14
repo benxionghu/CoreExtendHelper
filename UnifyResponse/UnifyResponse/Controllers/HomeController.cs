@@ -25,10 +25,10 @@ namespace UnifyResponse.Controllers
             return new ResponseSuccessResult<string>($@"成功的事例{id}");
         }
 
-        [HttpPost("Post")]
+        [HttpPost("Error")]
         public async Task<string> Post([FromBody] GetErrorRequest value)
         {
-            return value.Text;
+            throw new Exception("错误消息");
         }
 
         [HttpPost("GetError")]
@@ -41,7 +41,7 @@ namespace UnifyResponse.Controllers
         [HttpGet("GetPageResult")]
         public ResponseResult<PageResult<string>> GetPageResult()
         {
-            var result = new List<string> {"这个是分页信息展示", "这个是分页信息展示1", "这个是分页信息展示2"};
+            var result = new List<string> { "这个是分页信息展示", "这个是分页信息展示1", "这个是分页信息展示2" };
             return new ResponseSuccessResult<PageResult<string>>(new PageResult<string>
             {
                 CurrentIndex = 1,

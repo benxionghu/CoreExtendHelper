@@ -23,17 +23,18 @@ namespace UnifyResponse.Unitl
         {
             context.Request.EnableBuffering();
 
+            var url = $@"{context.Request.Scheme} {context.Request.Host}{context.Request.Path}";
             var stream = context.Request.Body;
             if (context.Request.Method.ToLower().Contains("get"))
             {
-                ExceptionLessLog.Info($"获取到的Get请求参数为：{context.Request.Scheme} {context.Request.Host}{context.Request.Path} {context.Request.QueryString}");
+                ExceptionLessLog.Info($"当前请求为Get请求,url为：{url},请求参数为:{context.Request.QueryString}");
             }
             var length = context.Request?.ContentLength;
             if (length != null && length > 0)
             {
                 var streamReader = new StreamReader(stream, Encoding.UTF8);
-                var postJson = streamReader.ReadToEndAsync().Result;
-                Console.WriteLine(postJson);
+                var postJson = await streamReader.ReadToEndAsync();
+                ExceptionLessLog.Info($"当前请求为Post请求,url为：{url},请求参数为:{postJson}");
             }
             context.Request.Body.Position = 0;
 
@@ -45,7 +46,7 @@ namespace UnifyResponse.Unitl
                 ms.Position = 0;
                 var responseReader = new StreamReader(ms);
                 var responseContent = responseReader.ReadToEnd();
-                Console.WriteLine($"Response Body: {responseContent} response.StatusCode{context.Response.StatusCode}");
+                ExceptionLessLog.Info($"请求url为：{url} 状态为:{context.Response.StatusCode} 返回参数为{responseContent}");
                 ms.Position = 0;
                 await ms.CopyToAsync(originalResponseStream);
                 context.Response.Body = originalResponseStream;
