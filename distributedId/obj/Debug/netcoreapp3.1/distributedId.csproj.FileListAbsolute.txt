@@ -1,0 +1,13 @@
+F:\小应用\distributionId\distributedId\obj\Debug\netcoreapp3.1\distributedId.csprojAssemblyReference.cache
+F:\小应用\distributionId\distributedId\obj\Debug\netcoreapp3.1\distributedId.csproj.CoreCompileInputs.cache
+F:\小应用\distributionId\distributedId\obj\Debug\netcoreapp3.1\distributedId.AssemblyInfoInputs.cache
+F:\小应用\distributionId\distributedId\obj\Debug\netcoreapp3.1\distributedId.AssemblyInfo.cs
+F:\小应用\distributionId\distributedId\bin\Debug\netcoreapp3.1\distributedId.exe
+F:\小应用\distributionId\distributedId\bin\Debug\netcoreapp3.1\distributedId.deps.json
+F:\小应用\distributionId\distributedId\bin\Debug\netcoreapp3.1\distributedId.runtimeconfig.json
+F:\小应用\distributionId\distributedId\bin\Debug\netcoreapp3.1\distributedId.runtimeconfig.dev.json
+F:\小应用\distributionId\distributedId\bin\Debug\netcoreapp3.1\distributedId.dll
+F:\小应用\distributionId\distributedId\bin\Debug\netcoreapp3.1\distributedId.pdb
+F:\小应用\distributionId\distributedId\obj\Debug\netcoreapp3.1\distributedId.dll
+F:\小应用\distributionId\distributedId\obj\Debug\netcoreapp3.1\distributedId.pdb
+F:\小应用\distributionId\distributedId\obj\Debug\netcoreapp3.1\distributedId.genruntimeconfig.cache
