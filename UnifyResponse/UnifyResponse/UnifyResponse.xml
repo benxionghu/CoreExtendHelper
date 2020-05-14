@@ -122,17 +122,10 @@
             <param name="o"></param>
             <returns></returns>
         </member>
-        <member name="T:UnifyResponse.Unitl.RequestLoggingMiddleware">
+        <member name="T:UnifyResponse.Unitl.LoggerMiddleware">
             <summary>
-            请求参数日志中间件
+            https://www.cnblogs.com/lwqlun/p/10954936.html
             </summary>
-        </member>
-        <member name="M:UnifyResponse.Unitl.RequestLoggingMiddleware.FormatRequest(Microsoft.AspNetCore.Http.HttpRequest)">
-            <summary>
-            请求参数
-            </summary>
-            <param name="request"></param>
-            <returns></returns>
         </member>
     </members>
 </doc>
