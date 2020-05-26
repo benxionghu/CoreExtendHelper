@@ -1,0 +1,198 @@
+syntax = "proto3";
+
+option csharp_namespace = "STQTradeGateway";
+
+package trade;
+
+service Trade {
+  rpc SavePassword (SavePasswordRequest) returns (SavePasswordReply);       // 保存密码（用于自动创建交易会话）
+  rpc UnsavePassword (UnsavePasswordRequest) returns (UnsavePasswordReply); // 删除保存的密码
+  rpc Login (LoginRequest) returns (LoginReply);                            // 登录（用于手工创建交易会话）
+  rpc Logout (LogoutRequest) returns (LogoutReply);                         // 登出
+  rpc GetBalance (GetBalanceRequest) returns (GetBalanceReply);             // 获取账户资金
+  rpc GetPosition (GetPositionRequest) returns (GetPositionReply);          // 获取仓位
+  rpc GetIpoQuota (GetIpoQuotaRequest) returns (GetIpoQuotaReply);          // 获取可申购额度
+  rpc GetOrder (GetOrderRequest) returns (GetOrderReply);                   // 获取委托
+  rpc GetTransaction (GetTransactionRequest) returns (GetTransactionReply); // 获取成交
+  rpc InsertOrder (InsertOrderRequest) returns (InsertOrderReply);          // 下单（申购）
+  rpc CancelOrder (CancelOrderRequest) returns (CancelOrderReply);          // 撤单
+}
+
+message SavePasswordRequest {
+  string account_id = 1;    // 资金账号
+  string account_pwd = 2;   // 资金密码
+}
+
+message SavePasswordReply {
+  int32 error_code = 1;     // 0-成功，<0-失败
+  string error_msg = 2;
+}
+
+message UnsavePasswordRequest {
+  string account_id = 1;    // 资金账号
+}
+
+message UnsavePasswordReply {
+  int32 error_code = 1;     // 0-成功，<0-失败
+  string error_msg = 2;
+}
+
+message LoginRequest {
+  string broker_id = 1;     // 券商id
+  string account_id = 2;    // 资金账号
+  string account_pwd = 3;   // 资金密码
+}
+
+message LoginReply {
+  int32 error_code = 1;     // 0-成功，<0-失败
+  string error_msg = 2;
+  string trade_token = 3;
+}
+
+message LogoutRequest {
+  string trade_token = 1;   // 交易令牌
+  string account_id = 2;    // 资金账号
+}
+
+message LogoutReply {
+  int32 error_code = 1;     // 0-成功，<0-失败
+  string error_msg = 2;
+}
+
+message GetBalanceRequest {
+  string trade_token = 1;   // 交易令牌
+  string account_id = 2;    // 资金账号
+}
+
+message GetBalanceReply {
+  int32 error_code = 1;     // 0-成功，<0-失败
+  string error_msg = 2;
+  string account_id = 3;    // 资金账号
+  double available = 4;     // 可用资金
+  double withdrawable = 5;  // 可取资金
+}
+
+message GetPositionRequest {
+  string trade_token = 1;   // 交易令牌
+  string account_id = 2;    // 资金账号
+}
+
+message GetPositionReply {
+  message Position {
+    string account_id = 1;  // 资金账号
+    int32 exchange_id = 2;  // 交易所代码
+    string security_id = 3; // 证券代码
+    int32 side = 4;         // 买卖方向
+    double price = 5;       // 开仓均价
+    double last_price = 6;  // 最新价格
+    int32 quantity = 7;     // 数量
+    int32 available = 8;    // 可用数量
+  }
+
+  int32 error_code = 1;     // 0-成功，<0-失败
+  string error_msg = 2;
+  repeated Position positions = 3;
+}
+
+message GetIpoQuotaRequest {
+  string trade_token = 1;   // 交易令牌
+  string account_id = 2;    // 资金账号
+}
+
+message GetIpoQuotaReply {
+  message IpoQuota {
+    int32 exchange_id = 1;  // 交易所
+    int32 market_id = 2;    // 市场
+    int64 max_quantity = 3; // 最大额度
+  }
+
+  int32 error_code = 1;     // 0-成功，<0-失败
+  string error_msg = 2;
+  repeated IpoQuota quota = 3;
+}
+
+message GetOrderRequest {
+  string trade_token = 1;   // 交易令牌
+  string account_id = 2;    // 资金账号
+  string order_id = 3;      // 指定单号（选填）
+}
+
+message GetOrderReply {
+  message Order {
+    string order_id = 1;      // 单号
+    string order_ref = 2;     // 下单时传入的关联内容
+    string account_id = 3;    // 资金账号
+    int32 exchange_id = 4;    // 交易所代码
+    string security_id = 5;   // 证券代码
+    int32 side = 6;           // 买卖方向
+    int32 offset = 16;        // 开平仓标志
+    int32 price_type = 7;     // 价格类型
+    double price = 8;         // 价格
+    int32 quantity = 9;       // 数量
+    int32 filled_quantity = 10;   // 已成交数量
+    double turnover = 11;     // 已成交金额
+    int32 status = 12;        // 状态
+    string note = 13;         // 额外备注信息
+    string insert_time = 14;  // 下单时间
+    string cancel_time = 15;  // 撤单时间
+  }
+
+  int32 error_code = 1;     // 0-成功，<0-失败
+  string error_msg = 2;
+  repeated Order orders = 3;
+}
+
+message GetTransactionRequest {
+  string trade_token = 1;   // 交易令牌
+  string account_id = 2;    // 资金账号
+}
+
+message GetTransactionReply {
+  message Transaction {
+    string transaction_id = 1;  // 成交编号
+    string order_id = 2;        // 委托单号
+    string order_ref = 3;       // 下单时传入的关联内容
+    string account_id = 4;      // 资金账号
+    int32 exchange_id = 5;      // 交易所代码
+    string security_id = 6;     // 证券代码
+    int32 side = 7;             // 买卖方向
+    int32 offset = 8;           // 开平标志
+    double price = 9;           // 价格
+    int32 quantity = 10;        // 数量
+    string execution_time = 11; // 成交时间
+  }
+
+  int32 error_code = 1;     // 0-成功，<0-失败
+  string error_msg = 2;
+  repeated Transaction transactions = 3;
+}
+
+message InsertOrderRequest {
+  string trade_token = 1;   // 交易令牌
+  string account_id = 2;    // 资金账号
+  string order_ref = 4;     // 单子关联内容（一般用作外部订单号）
+  int32 exchange_id = 5;    // 交易所代码
+  string security_id = 6;   // 证券代码
+  int32 side = 7;           // 买卖方向
+  int32 price_type = 8;     // 价格类型
+  double price = 9;         // 价格
+  int32 quantity = 10;      // 数量
+}
+
+message InsertOrderReply {
+  int32 error_code = 1;     // 0-成功，<0-失败
+  string error_msg = 2;
+  GetOrderReply.Order order = 3;
+}
+
+message CancelOrderRequest {
+  string trade_token = 1;   // 交易令牌
+  string account_id = 2;    // 资金账号
+  int32 exchange_id = 3;    // 交易所代码
+  string order_id = 4;      // 单号
+}
+
+message CancelOrderReply {
+  int32 error_code = 1;     // 0-成功，<0-失败
+  string error_msg = 2;
+}
