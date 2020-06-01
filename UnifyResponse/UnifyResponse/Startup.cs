@@ -24,7 +24,8 @@ namespace UnifyResponse
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            //返回内容进行压缩
+            services.AddResponseCompression();
             services.AddControllers();
             services.AddSwaggerGen(options =>
             {
@@ -66,9 +67,9 @@ namespace UnifyResponse
 
             app.UseAuthorization();
 
-            app.UseMiddleware(typeof(AppExceptionHandlerMiddleware));
-            app.UseMiddleware<LoggerMiddleware>();
-
+            app.UseMiddleware(typeof(LoggerMiddleware));
+            app.UseMiddleware(typeof(AppExceptionHandlerMiddleware)); //注意顺序关系
+            app.UseResponseCompression();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

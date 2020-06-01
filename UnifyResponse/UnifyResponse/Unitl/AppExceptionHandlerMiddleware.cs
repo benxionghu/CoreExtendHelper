@@ -52,7 +52,7 @@ namespace UnifyResponse.Unitl
             //状态码
             if (exception is UnauthorizedAccessException)
                 response.StatusCode = (int)HttpStatusCode.Unauthorized;
-            else if (exception is Exception)
+            else if (exception != null)
                 response.StatusCode = (int)HttpStatusCode.BadRequest;
 
             response.ContentType = context.Request.Headers["Accept"];

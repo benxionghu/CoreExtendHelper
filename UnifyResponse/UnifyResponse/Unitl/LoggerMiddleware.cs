@@ -39,18 +39,18 @@ namespace UnifyResponse.Unitl
             context.Request.Body.Position = 0;
 
             var originalResponseStream = context.Response.Body;
-            using (var ms = new MemoryStream())
-            {
-                context.Response.Body = ms;
-                await _next(context);
-                ms.Position = 0;
-                var responseReader = new StreamReader(ms);
-                var responseContent = responseReader.ReadToEnd();
-                ExceptionLessLog.Info($"请求url为：{url} 状态为:{context.Response.StatusCode} 返回参数为{responseContent}");
-                ms.Position = 0;
-                await ms.CopyToAsync(originalResponseStream);
-                context.Response.Body = originalResponseStream;
-            }
+
+
+            await using var ms = new MemoryStream();
+            context.Response.Body = ms;
+            await _next(context);
+            ms.Position = 0;
+            var responseReader = new StreamReader(ms);
+            var responseContent = responseReader.ReadToEnd();
+            ExceptionLessLog.Info($"请求url为：{url} 状态为:{context.Response.StatusCode} 返回参数为{responseContent}");
+            ms.Position = 0;
+            await ms.CopyToAsync(originalResponseStream);
+            context.Response.Body = originalResponseStream;
         }
 
         private async Task<string> FormatRequest(HttpRequest request)
