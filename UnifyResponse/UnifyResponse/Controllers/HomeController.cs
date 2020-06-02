@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using UnifyResponse.Common;
+using UnifyResponse.Convert;
 using UnifyResponse.Middlewar;
 using UnifyResponse.Model.Request;
 using UnifyResponse.Unitl;
@@ -26,9 +27,8 @@ namespace UnifyResponse.Controllers
         [Route("GetSuccess")]
         public ResponseResult<string> GetSuccess(int id)
         {
-            var cc = typeof(IMiddleware).GetTypeInfo();
-            var dd = typeof(AppExceptionHandlerMiddleware).GetTypeInfo();
-            var result = typeof(IMiddleware).GetTypeInfo().IsAssignableFrom(typeof(AppExceptionHandlerMiddleware).GetTypeInfo());
+            var i = 10;
+            var b = i.ConvertType(new IntToDoubleStep());
             return new ResponseSuccessResult<string>($@"成功的事例{id}");
         }
 
