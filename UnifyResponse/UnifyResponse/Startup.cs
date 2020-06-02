@@ -8,6 +8,8 @@ using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.OpenApi.Models;
 using System;
 using System.IO;
+using UnifyResponse.Middlewar;
+using UnifyResponse.Middlewar.Model;
 using UnifyResponse.Unitl;
 
 namespace UnifyResponse
@@ -46,6 +48,11 @@ namespace UnifyResponse
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            //中间件顺序
+            // 异常 / 错误处理
+            // 静态文件服务
+            // 身份认证
+            // MVC
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -67,8 +74,10 @@ namespace UnifyResponse
 
             app.UseAuthorization();
 
-            app.UseMiddleware(typeof(LoggerMiddleware));
-            app.UseMiddleware(typeof(AppExceptionHandlerMiddleware)); //注意顺序关系
+
+            //app.UseMiddleware(typeof(LoggerMiddleware));
+            //app.UseMiddleware(typeof(AppExceptionHandlerMiddleware)); //注意顺序关系
+            app.UseMiddleware<AutomaticParamMiddleware>(15.33d, 8.96d);
             app.UseResponseCompression();
             app.UseEndpoints(endpoints =>
             {

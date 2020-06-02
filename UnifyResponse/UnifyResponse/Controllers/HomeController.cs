@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using UnifyResponse.Common;
+using UnifyResponse.Middlewar;
 using UnifyResponse.Model.Request;
+using UnifyResponse.Unitl;
 
 namespace UnifyResponse.Controllers
 {
@@ -22,6 +26,9 @@ namespace UnifyResponse.Controllers
         [Route("GetSuccess")]
         public ResponseResult<string> GetSuccess(int id)
         {
+            var cc = typeof(IMiddleware).GetTypeInfo();
+            var dd = typeof(AppExceptionHandlerMiddleware).GetTypeInfo();
+            var result = typeof(IMiddleware).GetTypeInfo().IsAssignableFrom(typeof(AppExceptionHandlerMiddleware).GetTypeInfo());
             return new ResponseSuccessResult<string>($@"成功的事例{id}");
         }
 

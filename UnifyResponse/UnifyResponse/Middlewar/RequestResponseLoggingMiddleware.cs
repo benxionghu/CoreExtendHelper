@@ -1,22 +1,32 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using UnifyResponse.LogHelper;
 
-namespace UnifyResponse.Unitl
+namespace UnifyResponse.Middlewar
 {
+    /// <summary>
+    /// 请求和返回信息记录日志
+    /// </summary>
     public class RequestResponseLoggingMiddleware
     {
         private readonly RequestDelegate _next;
 
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="next"></param>
         public RequestResponseLoggingMiddleware(RequestDelegate next)
         {
             _next = next;
         }
+        /// <summary>
+        /// 执行方法
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public async Task Invoke(HttpContext context)
         {
             var request = await FormatRequest(context.Request);

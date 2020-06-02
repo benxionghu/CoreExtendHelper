@@ -1,30 +1,36 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using UnifyResponse.Common;
 using UnifyResponse.LogHelper;
 
-namespace UnifyResponse.Unitl
+namespace UnifyResponse.Middlewar
 {
     /// <summary>
-    /// 
+    /// 全局异常类
     /// </summary>
     public class AppExceptionHandlerMiddleware
     {
         private readonly RequestDelegate next;
 
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="next"></param>
         public AppExceptionHandlerMiddleware(RequestDelegate next)
         {
             this.next = next;
         }
 
+        /// <summary>
+        /// 执行方法
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public async Task Invoke(HttpContext context)
         {
             try
@@ -103,6 +109,5 @@ namespace UnifyResponse.Unitl
             }
             return sw.ToString();
         }
-
     }
 }
