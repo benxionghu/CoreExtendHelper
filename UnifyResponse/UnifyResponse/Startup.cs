@@ -1,4 +1,5 @@
 using Exceptionless;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -6,10 +7,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.OpenApi.Models;
+
 using System;
 using System.IO;
+
+using UnifyResponse.Filter;
 using UnifyResponse.Middlewar;
-using UnifyResponse.Middlewar.Model;
 using UnifyResponse.Unitl;
 
 namespace UnifyResponse
@@ -23,9 +26,19 @@ namespace UnifyResponse
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
+            //添加资源过滤器 
+            services.AddControllersWithViews(option =>
+            {
+                //option.Filters.Add<ResourceFilter>();
+                option.Filters.Add<ExceptionFilter>();
+            });
+
             //返回内容进行压缩
             services.AddResponseCompression();
             services.AddControllers();
@@ -45,7 +58,11 @@ namespace UnifyResponse
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="env"></param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             //中间件顺序
@@ -75,9 +92,8 @@ namespace UnifyResponse
             app.UseAuthorization();
 
 
-            //app.UseMiddleware(typeof(LoggerMiddleware));
+            app.UseMiddleware(typeof(LoggerMiddleware));
             //app.UseMiddleware(typeof(AppExceptionHandlerMiddleware)); //注意顺序关系
-            app.UseMiddleware<AutomaticParamMiddleware>(15.33d, 8.96d);
             app.UseResponseCompression();
             app.UseEndpoints(endpoints =>
             {

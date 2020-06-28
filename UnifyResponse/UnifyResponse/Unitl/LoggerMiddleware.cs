@@ -2,7 +2,9 @@
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Http;
+
 using UnifyResponse.LogHelper;
 
 namespace UnifyResponse.Unitl
@@ -58,7 +60,8 @@ namespace UnifyResponse.Unitl
             try
             {
                 var body = request.Body;
-                var buffer = new byte[Convert.ToInt32(request.ContentLength)];
+                var length = request?.ContentLength ?? 0;
+                var buffer = new byte[length];
                 await request.Body.ReadAsync(buffer, 0, buffer.Length);
                 var bodyAsText = Encoding.UTF8.GetString(buffer);
                 request.Body = body;
