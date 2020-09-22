@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using Exceptionless;
-
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Primitives;
 
-namespace UnifyResponse
+using NetCoreCustomConfig.Common;
+
+namespace NetCoreCustomConfig
 {
     public class Program
     {
@@ -22,17 +22,23 @@ namespace UnifyResponse
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration((hostContext, configApp) =>
-                {
-
-                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                }).ConfigureLogging((hostContext, configLogging) =>
+                })
+                .ConfigureHostConfiguration(configure =>
                 {
-                    configLogging.AddConsole();
-                    configLogging.AddDebug();
-                });
+                    //使用
+                    configure.AddMyConfiguration();
+                    var config = configure.Build();
+
+                    ChangeToken.OnChange(() => config.GetReloadToken(), () =>
+                     {
+                         Console.WriteLine(config["lastTime"]);
+                     });
+                    //自定义配置框架配置
+                    Console.WriteLine("开始了");
+                })
+            ;
     }
 }

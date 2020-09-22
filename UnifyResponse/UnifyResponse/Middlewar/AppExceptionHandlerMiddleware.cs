@@ -3,10 +3,13 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+
 using Newtonsoft.Json;
+
 using UnifyResponse.Common;
-using UnifyResponse.LogHelper;
 
 namespace UnifyResponse.Middlewar
 {
@@ -16,14 +19,15 @@ namespace UnifyResponse.Middlewar
     public class AppExceptionHandlerMiddleware
     {
         private readonly RequestDelegate next;
-
+        private readonly ILogger<AppExceptionHandlerMiddleware> _logger;
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="next"></param>
-        public AppExceptionHandlerMiddleware(RequestDelegate next)
+        public AppExceptionHandlerMiddleware(RequestDelegate next, ILogger<AppExceptionHandlerMiddleware> logger)
         {
             this.next = next;
+            this._logger = logger;
         }
 
         /// <summary>
@@ -43,13 +47,13 @@ namespace UnifyResponse.Middlewar
             }
         }
 
-        private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
+        private async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             if (exception == null) return;
             await WriteExceptionAsync(context, exception).ConfigureAwait(false);
         }
 
-        private static async Task WriteExceptionAsync(HttpContext context, Exception exception)
+        private async Task WriteExceptionAsync(HttpContext context, Exception exception)
         {
 
             //返回友好的提示
@@ -68,20 +72,20 @@ namespace UnifyResponse.Middlewar
                 var result = new ResponseErrorResult<object>
                 {
                     ErrorCode = -9999,
-                    ErrorMessage = exception.GetBaseException().Message,
+                    ErrorMessage = exception.GetBaseException().ToString(),
                 };
-                ExceptionLessLog.Error($@"错误原因为:{exception.GetBaseException().Message},错误详细为:{exception.GetBaseException().ToString()}");
+                _logger.LogError($@"错误原因为:{exception.GetBaseException().Message},错误详细为:{exception.GetBaseException().ToString()}");
                 await response.WriteAsync(Object2XmlString(result)).ConfigureAwait(false);
             }
             else
             {
-                response.ContentType = "application/json";
+                response.ContentType = "application/json;charset=utf-8";
                 var result = new ResponseErrorResult<object>
                 {
                     ErrorCode = -9999,
                     ErrorMessage = exception.GetBaseException().Message,
                 };
-                ExceptionLessLog.Error($@"错误原因为:{exception.GetBaseException().Message},错误详细为:{exception.GetBaseException().ToString()}");
+                _logger.LogError($@"错误原因为:{exception.GetBaseException().Message},错误详细为:{exception.GetBaseException().ToString()}");
                 await response.WriteAsync(JsonConvert.SerializeObject(result)).ConfigureAwait(false);
             }
         }
@@ -91,7 +95,7 @@ namespace UnifyResponse.Middlewar
         /// </summary>
         /// <param name="o"></param>
         /// <returns></returns>
-        private static string Object2XmlString(object o)
+        private string Object2XmlString(object o)
         {
             var sw = new StringWriter();
             try

@@ -4,8 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Http;
-
-using UnifyResponse.LogHelper;
+using Microsoft.Extensions.Logging;
 
 namespace UnifyResponse.Middlewar
 {
@@ -15,14 +14,16 @@ namespace UnifyResponse.Middlewar
     public class RequestResponseLoggingMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly ILogger<RequestResponseLoggingMiddleware> _logger;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="next"></param>
-        public RequestResponseLoggingMiddleware(RequestDelegate next)
+        public RequestResponseLoggingMiddleware(RequestDelegate next, ILogger<RequestResponseLoggingMiddleware> logger)
         {
             _next = next;
+            this._logger = logger;
         }
         /// <summary>
         /// 执行方法
@@ -51,7 +52,7 @@ namespace UnifyResponse.Middlewar
                 await request.Body.ReadAsync(buffer, 0, buffer.Length);
                 var bodyAsText = Encoding.UTF8.GetString(buffer);
                 request.Body = body;
-                ExceptionLessLog.Error($"请求参数为：{request.Scheme} {request.Host}{request.Path} {request.QueryString} {bodyAsText}");
+                _logger.LogError($"请求参数为：{request.Scheme} {request.Host}{request.Path} {request.QueryString} {bodyAsText}");
                 return $"{request.Scheme} {request.Host}{request.Path} {request.QueryString} {bodyAsText}";
             }
             catch (Exception ex)
@@ -68,7 +69,7 @@ namespace UnifyResponse.Middlewar
                 response.Body.Seek(0, SeekOrigin.Begin);
                 string text = await new StreamReader(response.Body).ReadToEndAsync();
                 response.Body.Seek(0, SeekOrigin.Begin);
-                ExceptionLessLog.Error($"返回参数为：{response.StatusCode}: {text}");
+                _logger.LogError($"返回参数为：{response.StatusCode}: {text}");
                 return $"{response.StatusCode}: {text}";
             }
             catch (Exception ex)

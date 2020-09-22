@@ -4,9 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+
 using UnifyResponse.Common;
 using UnifyResponse.Convert;
 using UnifyResponse.Middlewar;
@@ -19,6 +21,13 @@ namespace UnifyResponse.Controllers
     [Route("api/Home")]
     public class HomeController : ApiControllerBase
     {
+        private readonly ILogger<HomeController> _logger;
+
+        public HomeController(ILogger<HomeController> logger)
+        {
+            this._logger = logger;
+        }
+
         /// <summary>
         /// 成功的演示
         /// </summary>
@@ -27,7 +36,10 @@ namespace UnifyResponse.Controllers
         [Route("GetSuccess")]
         public ResponseResult<string> GetSuccess(int id)
         {
+            _logger.LogInformation("日志呀");
             var i = 10;
+            var ex = new Exception("测试日志");
+            throw ex;
             var b = i.ConvertType(new IntToDoubleStep());
             return new ResponseSuccessResult<string>($@"成功的事例{id}");
         }
@@ -39,7 +51,7 @@ namespace UnifyResponse.Controllers
         }
 
         [HttpPost("GetError")]
-        public ResponseResult<string> GetError([FromBody]GetErrorRequest request)
+        public ResponseResult<string> GetError([FromBody] GetErrorRequest request)
         {
             var text = $@"失败的实例 请求参数为:{request.Id} {request.Text}";
             return new ResponseSuccessResult<string>(text);

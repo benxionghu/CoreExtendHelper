@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.OpenApi.Models;
 
@@ -36,9 +37,9 @@ namespace UnifyResponse
             services.AddControllersWithViews(option =>
             {
                 //option.Filters.Add<ResourceFilter>();
-                option.Filters.Add<ExceptionFilter>();
+                //option.Filters.Add<ExceptionFilter>();
             });
-
+            services.AddLogging();
             //返回内容进行压缩
             services.AddResponseCompression();
             services.AddControllers();
@@ -63,8 +64,11 @@ namespace UnifyResponse
         /// </summary>
         /// <param name="app"></param>
         /// <param name="env"></param>
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
+            Configuration.GetSection("ExceptionLess").Bind(ExceptionlessClient.Default.Configuration);
+            app.UseExceptionless();
+            loggerFactory.AddExceptionless();
             //中间件顺序
             // 异常 / 错误处理
             // 静态文件服务
@@ -77,11 +81,7 @@ namespace UnifyResponse
 
             #region 注入exceptionless
 
-            ExceptionlessClient.Default.Configuration.ApiKey = Configuration.GetSection("ExceptionLess:AppKey").Value;
-            Console.WriteLine(Configuration.GetSection("ExceptionLess:AppKey").Value);
-            ExceptionlessClient.Default.Configuration.ServerUrl = Configuration.GetSection("ExceptionLess:ServerUrl").Value;
-            Console.WriteLine(Configuration.GetSection("ExceptionLess:ServerUrl").Value);
-            app.UseExceptionless();
+
 
             #endregion
 
@@ -93,7 +93,8 @@ namespace UnifyResponse
 
 
             app.UseMiddleware(typeof(LoggerMiddleware));
-            //app.UseMiddleware(typeof(AppExceptionHandlerMiddleware)); //注意顺序关系
+            app.UseMiddleware(typeof(AppExceptionHandlerMiddleware)); //注意顺序关系
+
             app.UseResponseCompression();
             app.UseEndpoints(endpoints =>
             {

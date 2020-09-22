@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
 
@@ -10,7 +11,6 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 using UnifyResponse.Common;
-using UnifyResponse.LogHelper;
 
 namespace UnifyResponse.Filter
 {
@@ -19,6 +19,12 @@ namespace UnifyResponse.Filter
     /// </summary>
     public class ExceptionFilter : IExceptionFilter
     {
+
+        private readonly ILogger<ExceptionFilter> _logger;
+        public ExceptionFilter(ILogger<ExceptionFilter> logger)
+        {
+            _logger = logger;
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -26,36 +32,7 @@ namespace UnifyResponse.Filter
         public void OnException(ExceptionContext filterContext)
         {
             var exception = filterContext.Exception;
-            ExceptionLessLog.Error($@"错误原因为:{exception.GetBaseException().Message},错误详细为:{exception.GetBaseException().ToString()}");
-            //var exception = filterContext.Exception;
-            //var context = filterContext.HttpContext;
-            //var response = context.Response;
-            //if (exception is UnauthorizedAccessException)
-            //    response.StatusCode = (int)HttpStatusCode.Unauthorized;
-            //else if (exception != null)
-            //    response.StatusCode = (int)HttpStatusCode.BadRequest;
-            //response.ContentType = context.Request.Headers["Accept"];
-            //if (response.ContentType.ToLower() == "application/xml")
-            //{
-            //    var result = new ResponseErrorResult<object>
-            //    {
-            //        ErrorCode = -9999,
-            //        ErrorMessage = exception.GetBaseException().Message,
-            //    };
-            //    ExceptionLessLog.Error($@"错误原因为:{exception.GetBaseException().Message},错误详细为:{exception.GetBaseException().ToString()}");
-            //    response.WriteAsync(Object2XmlString(result)).ConfigureAwait(true);
-            //}
-            //else
-            //{
-            //    response.ContentType = "application/json";
-            //    var result = new ResponseErrorResult<object>
-            //    {
-            //        ErrorCode = -9999,
-            //        ErrorMessage = exception.GetBaseException().Message,
-            //    };
-            //    ExceptionLessLog.Error($@"错误原因为:{exception.GetBaseException().Message},错误详细为:{exception.GetBaseException().ToString()}");
-            //    response.WriteAsync(JsonConvert.SerializeObject(result)).ConfigureAwait(true);
-            //}
+            _logger.LogError($@"错误原因为:{exception.GetBaseException().Message},错误详细为:{exception.GetBaseException().ToString()}");
         }
 
         /// <summary>
