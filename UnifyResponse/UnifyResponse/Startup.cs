@@ -11,7 +11,7 @@ using Microsoft.OpenApi.Models;
 
 using System;
 using System.IO;
-
+using System.Reflection;
 using UnifyResponse.Filter;
 using UnifyResponse.Middlewar;
 using UnifyResponse.Unitl;
@@ -49,7 +49,10 @@ namespace UnifyResponse
                 //option.Filters.Add<ResourceFilter>();
                 //option.Filters.Add<ExceptionFilter>();
             });
+            //批量注入
+            services.AddSingleton(Assembly.Load("UnifyResponseService"), Assembly.Load("UnifyResponseService"));
             services.AddLogging();
+
             //返回内容进行压缩
             services.AddResponseCompression();
             services.AddControllers();

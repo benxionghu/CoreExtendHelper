@@ -14,6 +14,7 @@ using UnifyResponse.Convert;
 using UnifyResponse.Middlewar;
 using UnifyResponse.Model.Request;
 using UnifyResponse.Unitl;
+using UnifyResponseService.IService;
 
 namespace UnifyResponse.Controllers
 {
@@ -22,10 +23,12 @@ namespace UnifyResponse.Controllers
     public class HomeController : ApiControllerBase
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IMyService _myService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IMyService myService)
         {
             this._logger = logger;
+            _myService = myService;
         }
 
         /// <summary>
@@ -36,6 +39,7 @@ namespace UnifyResponse.Controllers
         [Route("GetSuccess")]
         public ResponseResult<string> GetSuccess(int id)
         {
+            _myService.Test();
             _logger.LogInformation("日志呀");
             var i = 10;
             var ex = new Exception("测试日志");

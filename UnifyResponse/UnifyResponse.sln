@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.29519.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnifyResponse", "UnifyResponse\UnifyResponse.csproj", "{196B870E-CF34-4520-A0A0-A920EFD2F0CD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnifyResponseService", "UnifyResponseService\UnifyResponseService.csproj", "{43D5669F-A742-424B-B039-079F7FCB3C2B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{196B870E-CF34-4520-A0A0-A920EFD2F0CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{196B870E-CF34-4520-A0A0-A920EFD2F0CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{196B870E-CF34-4520-A0A0-A920EFD2F0CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43D5669F-A742-424B-B039-079F7FCB3C2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43D5669F-A742-424B-B039-079F7FCB3C2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43D5669F-A742-424B-B039-079F7FCB3C2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43D5669F-A742-424B-B039-079F7FCB3C2B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
