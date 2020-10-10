@@ -13,6 +13,9 @@ using NetCoreCustomConfig.Common;
 
 namespace NetCoreCustomConfig
 {
+    /// <summary>
+    /// 自定义获取配置项   老肖的极客时间教程
+    /// </summary>
     public class Program
     {
         public static void Main(string[] args)
