@@ -18,13 +18,23 @@ using UnifyResponse.Unitl;
 
 namespace UnifyResponse
 {
+    /// <summary>
+    /// 启动项
+    /// </summary>
     public class Startup
     {
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="configuration"></param>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
+        /// <summary>
+        /// 配置文件
+        /// </summary>
         public IConfiguration Configuration { get; }
 
         /// <summary>
@@ -79,16 +89,8 @@ namespace UnifyResponse
                 app.UseDeveloperExceptionPage();
             }
 
-            #region 注入exceptionless
-
-
-
-            #endregion
-
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthorization();
 
 
