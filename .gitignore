@@ -10,3 +10,7 @@
 /NetCoreAop/Aop/.vs
 /NetCoreAop/Aop/Aop/obj
 /NetCoreAop/Aop/Aop/bin
+/NetCoreCustomConfig/NetCoreCustomConfig/NetCoreCustomConfig/*
+/NetCoreCustomConfig/NetCoreCustomConfig/.vs
+/UnifyResponse/UnifyResponseService/obj
+/UnifyResponse/UnifyResponseService/bin
